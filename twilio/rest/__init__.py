@@ -59,7 +59,7 @@ class TwilioRestClient(object):
     """
 
     def __init__(self, account=None, token=None, base="https://api.twilio.com",
-                 version="2010-04-01", client=None, timeout=UNSET_TIMEOUT):
+                 version="2010-04-01", client=None, timeout=UNSET_TIMEOUT, subaccount=None):
         """
         Create a Twilio REST API client.
         """
@@ -87,7 +87,9 @@ values from your Twilio Account at https://www.twilio.com/user/account.
         self.base = base
         auth = (account, token)
         version_uri = "%s/%s" % (base, version)
-        account_uri = "%s/%s/Accounts/%s" % (base, version, account)
+        if subaccount is None:
+            subaccount = account
+        account_uri = "%s/%s/Accounts/%s" % (base, version, subaccount)
 
         self.accounts = Accounts(version_uri, auth, timeout)
         self.applications = Applications(account_uri, auth, timeout)
